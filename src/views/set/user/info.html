@@ -1,0 +1,71 @@
+<title>设置我的资料</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>设置</cite></a>
+        <a><cite>我的资料</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">设置我的资料</div>
+                <div class="layui-card-body" pad15>
+                <script type="text/html" template lay-url="{{layui.setter.apiUrl + '/user/info'}}">
+                    <div class="layui-form" lay-filter="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">我的角色<font color="red">*</font></label>
+                            <div class="layui-input-inline">
+                                <input type="text" value="{{d.data.user_role_name || ''}}" readonly class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">不可修改</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名<font color="red">*</font></label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="username" value="{{d.data.username || ''}}" lay-verify="username" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">昵称<font color="red">*</font></label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="nickname" value="{{d.data.nickname || ''}}" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">手机</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="user_phone" value="{{d.data.user_phone || ''}}" lay-verify="user_phone" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="user_email" value="{{d.data.user_email || ''}}" lay-verify="user_email" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+                                注意：带<font color="red">*</font>号为必填项
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="Lay-set-user-info">确认修改</button>
+                            </div>
+                        </div>
+                    </div>
+                </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('set', layui.factory('set'));
+</script>

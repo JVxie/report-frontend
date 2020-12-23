@@ -1,0 +1,124 @@
+<title>专业列表</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>信息查询</cite></a>
+        <a><cite>查询专业信息</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-major-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">ID</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id_before" placeholder="请输入起始ID" autocomplete="off" class="layui-input">
+                        <input type="text" name="id_after" placeholder="请输入结束ID" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">专业名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" placeholder="请输入专业名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">专业类别</label>
+                        <div class="layui-input-inline">
+                            <select class="" name="category" lay-search>
+                                <option value="">请选择专业类别</option>
+                                <option value="1">文学</option>
+                                <option value="2">法学</option>
+                                <option value="3">管理学</option>
+                                <option value="4">理学</option>
+                                <option value="5">工学</option>
+                                <option value="6">教育学</option>
+                                <option value="7">历史学</option>
+                                <option value="8">经济学</option>
+                                <option value="9">农学</option>
+                                <option value="10">艺术学</option>
+                            </select>
+                        </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">所属学院</label>
+                    <div class="layui-input-inline">
+                        <script type="text/html" template lay-url="{{layui.setter.userRole.teacher.api + '/college'}}"
+                                lay-done="major_done(d);">
+                            <select name="college_id" lay-search>
+                                <option value="">请选择学院</option>
+                                    {{# layui.each(d.data, function(index, item) { }}
+                                    <option value="{{item.id}}">{{item.name}}</option>
+                                    {{#  }); }}
+                            </select>
+                        </script>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-teacher-major-list-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-teacher-major-list" lay-filter="LAY-teacher-major-list"></table>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('laydate', function () {
+        const laydate = layui.laydate;
+        lay('.date-item').each(function () {
+            laydate.render({
+                elem: this
+                ,type: 'datetime'
+            });
+        });
+
+    });
+    layui.use('teacher/major', layui.factory('teacher/major')).use(['admin', 'teacher/major', 'table'], function(){
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,table = layui.table
+            ,form = layui.form
+            ,setter = layui.setter;
+
+        form.render(null, 'layadmin-major-formlist');
+
+        //监听搜索
+        form.on('submit(LAY-teacher-major-list-search)', function(data){
+            var field = data.field;
+            //执行重载
+            table.reload('LAY-teacher-major-list', {
+                where: field
+            });
+        });
+
+        //事件
+        var active = {};
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+
+
+</script>
+
+<script>
+    var major_done = function (d) {
+        layui.use(['form'], function(){
+            var form = layui.form;
+            form.render();
+        });
+    };
+</script>

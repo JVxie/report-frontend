@@ -1,0 +1,17 @@
+<div class="layui-form" lay-filter="layuiadmin-form-college" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">学院名称</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="name" value="{{ d.params.name || '' }}" lay-verify="required" placeholder="请输入学院名称" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-admin-college-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>

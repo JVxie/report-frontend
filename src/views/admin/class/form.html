@@ -1,0 +1,118 @@
+<div class="layui-form" lay-filter="layuiadmin-form-class" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">缩写名称<font color="red">*</font></label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="abbr_name" value="{{ d.params.abbr_name || '' }}" lay-verify="required" placeholder="请输入班级缩写名称" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">年级<font color="red">*</font></label>
+        <div class="layui-inline">
+            <script type="text/html" template>
+                <input type="hidden" id="LAY-admin-grade-id-form" lay-verify="required"  name="grade_id" value="{{ d.params.grade_id || '' }}" autocomplete="off" class="layui-input">
+            </script>
+            <button class="layui-btn layuiadmin-btn-useradmin" data-type="grade">
+                <script type="text/html" template>
+                    <p id="LAY-admin-grade-name-form">{{=d.params.grade_name || '请选择年级'}}</p>
+                </script>
+            </button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">所属专业<font color="red">*</font></label>
+        <div class="layui-inline">
+            <script type="text/html" template>
+                <input type="hidden" id="LAY-admin-major-id-form" lay-verify="required" name="major_id" value="{{ d.params.major_id || '' }}" autocomplete="off" class="layui-input">
+            </script>
+            <button class="layui-btn layuiadmin-btn-useradmin" data-type="major">
+                <script type="text/html" template>
+                    <p id="LAY-admin-major-name-form">{{=d.params.major_name || '请选择专业'}}</p>
+                </script>
+            </button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">班级号<font color="red">*</font></label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="num" value="{{ d.params.num || '' }}" lay-verify="required|number" placeholder="请输入班级号(数字)" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-admin-class-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('admin', function () {
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,table = layui.table
+            ,form = layui.form
+            ,setter = layui.setter;
+
+
+        form.render('select');
+
+        var active = {
+            grade: function () {
+                admin.popup({
+                    title: '选择年级'
+                    ,area: ['900px', '700px']
+                    ,id: 'LAY-admin-grade-select'
+                    ,success: function (layero, index) {
+                        view(this.id).render('admin/grade/radio_list').done(function () {
+                            $('#LAY-admin-grade-radio-list-select').click(function () {
+                                var gradeData = (table.checkStatus('LAY-admin-grade-radio-list').data)[0];
+                                if (gradeData) {
+                                    $('#LAY-admin-grade-name-form').html(gradeData.name);
+                                    $('#LAY-admin-grade-id-form').val(gradeData.id);
+                                    layer.close(index);
+                                } else {
+                                    $('#LAY-admin-grade-name-form').html('请选择学院');
+                                    $('#LAY-admin-grade-id-form').val('');
+                                    layer.close(index);
+                                }
+                            })
+                        });
+                    }
+                });
+            },
+            major: function () {
+                admin.popup({
+                    title: '选择专业'
+                    ,area: ['900px', '700px']
+                    ,id: 'LAY-admin-major-select'
+                    ,success: function (layero, index) {
+                        view(this.id).render('admin/major/radio_list').done(function () {
+                            $('#LAY-admin-major-radio-list-select').click(function () {
+                                var gradeData = (table.checkStatus('LAY-admin-major-radio-list').data)[0];
+                                if (gradeData) {
+                                    $('#LAY-admin-major-name-form').html(gradeData.name);
+                                    $('#LAY-admin-major-id-form').val(gradeData.id);
+                                    layer.close(index);
+                                } else {
+                                    $('#LAY-admin-major-name-form').html('请选择学院');
+                                    $('#LAY-admin-major-id-form').val('');
+                                    layer.close(index);
+                                }
+                            })
+                        });
+                    }
+                });
+            }
+        };
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>

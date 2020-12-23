@@ -1,0 +1,65 @@
+<div class="layui-form" lay-filter="layuiadmin-form-teacher" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">工号<font color="red">*</font></label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="number" value="{{ d.params.number || '' }}" lay-verify="required" placeholder="请输入教师工号" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名<font color="red">*</font></label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="name" value="{{ d.params.name || '' }}" lay-verify="required" placeholder="请输入教师名称" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别<font color="red">*</font></label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <select name="sex" lay-verify="required" lay-search>
+                    <option value="">请选择性别</option>
+                    <option value="1" {{d.params.sex!==1 || 'selected'}}>男</option>
+                    <option value="2" {{d.params.sex!==2 || 'selected'}}>女</option>
+                </select>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系方式（手机）</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="phone" value="{{ d.params.phone || '' }}"  placeholder="请输入手机号" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-admin-teacher-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('admin', function () {
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,table = layui.table
+            ,form = layui.form
+            ,setter = layui.setter;
+
+
+        form.render('select');
+
+        var active = {};
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>

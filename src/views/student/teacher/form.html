@@ -1,0 +1,81 @@
+<div class="layui-form" lay-filter="layuiadmin-form-teacher" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">工号</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="number" value="{{ d.params.number || '' }}" lay-verify="required" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="name" value="{{ d.params.name || '' }}" lay-verify="required" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="sex_name" value="{{ d.params.sex_name || '' }}" lay-verify="required" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系方式（手机）</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="phone" value="{{ d.params.phone || '' }}"  autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">管理班级</label>
+        <div class="layui-btn-container">
+            <script type="text/html" template lay-url="{{layui.setter.userRole.student.api + '/teacher/' + d.params.id + '/classes'}}"
+                    lay-done="layui.data.done(d);">
+                {{# layui.each(d.data, function(index, item) { }}
+                <button class="layui-btn class-id layui-btn-primary" id="class-id-{{item.id}}">{{item.abbr_name}}</button>
+                {{#  }); }}
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.data.done = function (d) {
+        layui.use('admin', function () {
+            var $ = layui.$
+                , admin = layui.admin
+                , view = layui.view
+                , table = layui.table
+                , form = layui.form
+                , setter = layui.setter;
+
+            $('.layui-btn.class-id').on('click', function () {
+                let classId = getClassIdByButtonId(this.id);
+                admin.req({
+                    url: setter.userRole.student.api + '/class/' + classId
+                    , type: 'GET'
+                    , dataType: 'json'
+                    , done: function (res_p) {
+                        admin.popup({
+                            title: '班级信息'
+                            , area: ['400px', '350px']
+                            , success: function (layero, index) {
+                                view(this.id).render('student/class/look_form', res_p.data);
+                            }
+                        });
+                    }
+                });
+            });
+
+            function getClassIdByButtonId(buttonId) {
+                let _data = buttonId.split('-');
+                return parseInt(_data.pop());
+            }
+        });
+    }
+</script>

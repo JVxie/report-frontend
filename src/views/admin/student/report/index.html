@@ -1,0 +1,165 @@
+<title>学生列表</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>其他</cite></a>
+        <a><cite>学生疫情填报管理</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-student-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">学号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="number" placeholder="请输入学生学号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" placeholder="请输入学生姓名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-inline">
+                        <select name="sex" lay-search>
+                            <option value="">请选择性别</option>
+                            <option value="1">男</option>
+                            <option value="2">女</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">班级</label>
+                    <div class="layui-input-block">
+                        <input type="hidden" id="LAY-admin-class-id" name="class_id" value="" autocomplete="off" class="layui-input">
+                        <button class="layui-btn layuiadmin-btn-useradmin" data-type="class">
+                            <p id="LAY-admin-class-abbr-name">请选择班级</p>
+                        </button>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">已填报</label>
+                    <div class="layui-input-inline">
+                        <select name="is_report_today" lay-search>
+                            <option value="">今日是否已填报</option>
+                            <option value="1">是</option>
+                            <option value="0">否</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">填报异常</label>
+                    <div class="layui-input-inline">
+                        <select name="is_abnormal" lay-search>
+                            <option value="">今日填报是否异常填报</option>
+                            <option value="1">是</option>
+                            <option value="0">否</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-admin-student-list-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+
+            <table id="LAY-admin-student-list" lay-filter="LAY-admin-student-list"></table>
+            <script type="text/html" id="table-admin-student-report-status">
+                {{# if (d.report_today) {
+                        if (!d.report_today.is_abnormal) {
+                }}
+                    <button class="layui-btn layui-btn-radius layui-btn-xs" lay-event="check">填报正常</button>
+                {{#
+                        } else {
+                }}
+                    <button class="layui-btn layui-btn-warm layui-btn-radius layui-btn-xs" lay-event="check">填报异常</button>
+                {{#
+                        }
+                }}
+                {{# } else { }}
+                <button class="layui-btn layui-btn-danger layui-btn-radius layui-btn-xs" disabled>未填报</button>
+                {{# } }}
+            </script>
+            <script type="text/html" id="table-admin-student-list">
+                {{# if(d.report_today) { }}
+<!--                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="check"><i class="layui-icon layui-icon-search"></i>查看</a>-->
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+                {{# } }}
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('laydate', function () {
+        const laydate = layui.laydate;
+        lay('.date-item').each(function () {
+            laydate.render({
+                elem: this
+                ,type: 'datetime'
+            });
+        });
+
+    });
+    layui.use('admin/student/report', layui.factory('admin/student/report')).use(['admin', 'admin/student/report', 'table'], function(){
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,table = layui.table
+            ,form = layui.form
+            ,setter = layui.setter;
+
+        form.render(null, 'layadmin-student-formlist');
+
+        //监听搜索
+        form.on('submit(LAY-admin-student-list-search)', function(data){
+            var field = data.field;
+            //执行重载
+            table.reload('LAY-admin-student-list', {
+                where: field
+            });
+        });
+
+        //事件
+        var active = {
+            class: function () {
+                admin.popup({
+                    title: '选择班级'
+                    ,area: ['1000px', '700px']
+                    ,id: 'LAY-admin-class-select'
+                    ,success: function (layero, index) {
+                        view(this.id).render('admin/class/radio_list').done(function () {
+                            $('#LAY-admin-class-radio-list-select').click(function () {
+                                var classData = (table.checkStatus('LAY-admin-class-radio-list').data)[0];
+                                if (classData) {
+                                    $('#LAY-admin-class-abbr-name').html(classData.abbr_name);
+                                    $('#LAY-admin-class-id').val(classData.id);
+                                    layer.close(index);
+                                } else {
+                                    $('#LAY-admin-class-abbr-name').html('请选择班级');
+                                    $('#LAY-admin-class-id').val('');
+                                    layer.close(index);
+                                }
+                            })
+                        });
+                    }
+                });
+            }
+        };
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>

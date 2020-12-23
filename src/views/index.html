@@ -1,0 +1,19 @@
+<script type="text/html" template lay-url="{{layui.setter.apiUrl + '/user/info'}}" lay-done="layui.index.done(d);"></script>
+<script>
+    layui.index.done = function (d) {
+        let userRole = d.data.user_role;
+        var $ = layui.$
+            ,setter = layui.setter
+            ,admin = layui.admin
+            ,form = layui.form
+            ,router = layui.router()
+            ,search = router.search;
+        if (userRole === setter.userRole.admin.role) {
+            location.hash = search.redirect ? decodeURIComponent(search.redirect) : '/admin/';
+        } else if (userRole === setter.userRole.teacher.role) {
+            location.hash = search.redirect ? decodeURIComponent(search.redirect) : '/teacher/';
+        } else if (userRole === setter.userRole.student.role) {
+            location.hash = search.redirect ? decodeURIComponent(search.redirect) : '/student/'
+        }
+    };
+</script>

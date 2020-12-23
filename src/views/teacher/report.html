@@ -1,0 +1,232 @@
+<title>疫情填报</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>应用</cite></a>
+        <a><cite>疫情填报</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">疫情填报</div>
+                <div class="layui-card-body" pad15>
+                    <div class="layui-form layui-form-pane" lay-filter="layuiadmin-form-teacher">
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label">工号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="number" value=""  autocomplete="off"
+                                       class="layui-input" readonly>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label">姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" value="" autocomplete="off"
+                                       class="layui-input" readonly>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label">性别</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="sex_name" value="" autocomplete="off"
+                                       class="layui-input" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form layui-form-pane" lay-filter="layuiadmin-form-teacher-report"
+                         style="padding: 20px 0 0 0;">
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color="red">*</font>手机号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="phone" value="" lay-verify="required|phone" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color="red">*</font>体温</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="temperature" value="" lay-verify="required|number" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color="red">*</font>当前所在地</label>
+                            <div class="layui-input-block">
+                                <div class="layui-inline">
+                                    <select class="report-now area-map-province" name="now_province_id"
+                                            lay-verify="required" lay-filter="province" lay-search>
+                                        <option value="">请选择省/直辖市</option>
+                                    </select>
+                                </div>
+                                <div class="layui-inline">
+                                    <select class="report-now area-map-city" name="now_city_id" lay-verify="required"
+                                            lay-filter="city" lay-search>
+                                        <option value="">请选择市</option>
+                                    </select>
+                                </div>
+                                <div class="layui-inline">
+                                    <select class="report-now area-map-area" name="now_area_id" lay-verify="required"
+                                            lay-search>
+                                        <option value="">请选择区/县</option>
+                                    </select>
+                                </div>
+                                <div class="layui-col-md9">
+                                    <input type="text" name="now_address" value="" lay-verify="required"
+                                           autocomplete="off" class="layui-input" placeholder="请输入详细地址">
+                                </div>
+                            </div>
+                            <!--                            <div class="layui-form-mid layui-word-aux">不可修改</div>-->
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color="red">*</font>家庭住址</label>
+                            <div class="layui-input-block">
+                                <div class="layui-inline">
+                                    <select class="report-home area-map-province" name="home_province_id"
+                                            lay-verify="required" lay-filter="province" lay-search>
+                                        <option value="">请选择省/直辖市</option>
+                                    </select>
+                                </div>
+                                <div class="layui-inline">
+                                    <select class="report-home area-map-city" name="home_city_id" lay-verify="required"
+                                            lay-filter="city" lay-search>
+                                        <option value="">请选择市</option>
+                                    </select>
+                                </div>
+                                <div class="layui-inline">
+                                    <select class="report-home area-map-area" name="home_area_id" lay-verify="required"
+                                            lay-search>
+                                        <option value="">请选择区/县</option>
+                                    </select>
+                                </div>
+                                <div class="layui-col-md9">
+                                    <input type="text" name="home_address" value="" lay-verify="required"
+                                           autocomplete="off" class="layui-input" placeholder="请输入详细地址">
+                                </div>
+                            </div>
+                            <!--                            <div class="layui-form-mid layui-word-aux">不可修改</div>-->
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color="red">*</font>是否发烧咳嗽(可多选)</label>
+                            <div class="layui-input-block">
+                                <input class="is-fever-cough one" type="checkbox" title="有发烧症状" name="is_fever_cough_1" value="1"
+                                       lay-filter="is-fever-cough" lay-verify="other_required">
+                                <input class="is-fever-cough one" type="checkbox" title="有咳嗽症状" name="is_fever_cough_2" value="2"
+                                       lay-filter="is-fever-cough" lay-verify="other_required">
+                            </div>
+                            <div class="layui-input-block">
+                                <input class="is-fever-cough one" type="checkbox" title="有呼吸困难症状" name="is_fever_cough_3" value="3"
+                                       lay-filter="is-fever-cough" lay-verify="other_required">
+                                <input class="is-fever-cough nothing" type="checkbox" title="无以上症状" name="is_fever_cough_0" value="0"
+                                       lay-filter="nothing" lay-verify="other_required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color="red">*</font>是否确诊新型肺炎</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="is_covid" title="是，医院已确诊" value="1"
+                                       lay-verify="other_required">
+                            </div>
+                            <div class="layui-input-block">
+                                <input type="radio" name="is_covid" title="否，身体健康" value="0"
+                                       lay-verify="other_required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color="red">*</font>是否疑似感染</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="is_infection" title="是，医院已确诊" value="1"
+                                       lay-verify="other_required">
+                            </div>
+                            <div class="layui-input-block">
+                                <input type="radio" name="is_infection" title="否，不是疑似感染者" value="0"
+                                       lay-verify="other_required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color="red">*</font>目前居住地疫情风险等级</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="area_level" title="低风险" value="0" lay-verify="other_required">
+                            </div>
+                            <div class="layui-input-block">
+                                <input type="radio" name="area_level" title="中风险" value="1" lay-verify="other_required">
+                            </div>
+                            <div class="layui-input-block">
+                                <input type="radio" name="area_level" title="高风险" value="2" lay-verify="other_required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color="red">*</font>是否有防疫健康信息绿码</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="is_health_code" title="是，有健康绿码" value="1"
+                                       lay-verify="other_required">
+                            </div>
+                            <div class="layui-input-block">
+                                <input type="radio" name="is_health_code" title="否，没有健康绿码" value="0"
+                                       lay-verify="other_required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color="red">*</font>是否从国(境)外返回(9月份起算)</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="is_back_foreign" title="是，从国(境)外返回" value="1"
+                                       lay-verify="other_required">
+                            </div>
+                            <div class="layui-input-block">
+                                <input type="radio" name="is_back_foreign" title="否，一直在国内" value="0"
+                                       lay-verify="other_required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label"><font color="red">*</font>是否接触国(境)外返回的人员</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="is_touch_foreigner" title="是，与国(境)外返回的人员有接触" value="1"
+                                       lay-verify="other_required">
+                            </div>
+                            <div class="layui-input-block">
+                                <input type="radio" name="is_touch_foreigner" title="否，没有接触国(境)外返回的人员" value="0"
+                                       lay-verify="other_required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">其他情况说明</label>
+                            <div class="layui-input-block">
+                                <textarea name="description" placeholder="若有其他情况，请详细描述" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <input type="checkbox" title="我已阅读承诺书，并保证按承诺书内容执行。" lay-skin="primary" lay-filter="accept">
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input id="teacher-report-submit" type="button" lay-submit lay-filter="LAY-teacher-report-submit" value="提交"
+                                       class="layui-btn layui-btn-disabled" disabled>
+                                <label class="">注意：<font color="red">*</font>为必填项</label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <label class="">若基础信息有误请联系管理员</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('teacher/report', layui.factory('teacher/report')).use(['admin', 'teacher/report'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , form = layui.form
+            , setter = layui.setter
+            , view = layui.view
+        ;
+        form.render();
+    });
+</script>

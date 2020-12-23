@@ -1,0 +1,91 @@
+<script type="text/html" template>
+    <link rel="stylesheet" href="{{ layui.setter.base }}style/login.css?v={{ layui.admin.v }}-1" media="all">
+    <style>
+        /*body::before {*/
+        /*    background: url("{{ layui.setter.base }}style/res/login_bg.jpg") 0 / cover fixed;*/
+        /*    !*background-size: cover;*!*/
+        /*    float: left;*/
+        /*    width: 100%;*/
+        /*    -webkit-filter: blur(15px);*/
+        /*    -moz-filter: blur(15px);*/
+        /*    -o-filter: blur(15px);*/
+        /*    -ms-filter: blur(15px);*/
+        /*    filter: blur(15px);*/
+
+        /*}*/
+    </style>
+</script>
+
+<div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
+    <div class="layadmin-user-login-main" style="border-radius: 30px" bgimg>
+        <div class="layadmin-user-login-box layadmin-user-login-header">
+            <h2>高校人员信息管理系统</h2>
+            <p>请输入用户名及密码以登录</p>
+        </div>
+        <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+            <div class="layui-form-item">
+                <label class="layadmin-user-login-icon layui-icon layui-icon-username"
+                       for="LAY-user-login-username"></label>
+                <input type="text" name="username" id="LAY-user-login-username" lay-verify="required"
+                       placeholder="用户名" class="layui-input">
+            </div>
+            <div class="layui-form-item">
+                <label class="layadmin-user-login-icon layui-icon layui-icon-password"
+                       for="LAY-user-login-password"></label>
+                <input type="password" name="password" id="LAY-user-login-password" lay-verify="required"
+                       placeholder="密码" class="layui-input">
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <button class="layui-btn layui-btn-fluid layui-btn-radius" lay-submit
+                        lay-filter="LAY-user-login-submit">登 录
+                </button>
+            </div>
+        </div>
+        <div class="layui-trans layadmin-user-login-footer">
+            <p>© 2020 </p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    layui.use(['admin', 'form', 'user'], function () {
+        var $ = layui.$
+            , setter = layui.setter
+            , admin = layui.admin
+            , form = layui.form
+            , router = layui.router()
+            , search = router.search;
+
+        form.render();
+
+        form.on('submit(LAY-user-login-submit)', function (obj) {
+            admin.req({
+                url: setter.apiUrl + '/user/login'
+                , method: 'POST'
+                , data: JSON.stringify(obj.field)
+                , contentType: "application/json"
+                , dataType: 'json'
+                , done: function (res) {
+                    layui.data(setter.tableName, {
+                        key: setter.request.tokenName
+                        , value: res.data.token
+                    });
+                    layer.msg('登录成功', {
+                        offset: '15px'
+                        , icon: 1
+                        , time: 1000
+                    }, function () {
+                        location.hash = search.redirect ? decodeURIComponent(search.redirect) : '/';
+                    });
+                }
+            });
+        });
+
+    });
+</script>

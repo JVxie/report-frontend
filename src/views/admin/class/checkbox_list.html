@@ -1,0 +1,182 @@
+<div class="layui-fluid">
+    <div class="layui-card-body" id="Lay-admin-teacher-classes">
+        <label class="layui-form-label-col">已选择的班级：</label>
+<!--        <div class="layui-form" lay-filter="Lay-admin-teacher-id">-->
+<!--            <div class="layui-form-item">-->
+<!--                <label class="layui-form-label">123</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <script type="text/html" template>-->
+<!--                        <input class="layui-input" type="text" name="teacher_id" value="{{d.params.id || '' }}"/>-->
+<!--                    </script>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="layui-btn-container" id="classes-button">
+<!--            <button class="layui-btn class-id layui-btn-primary layui-btn-sm" id="1">123<i class="layui-icon layui-icon-close"></i></button>-->
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <button class="layui-btn" id="LAY-admin-class-checkbox-list-select">
+            确定
+        </button>
+    </div>
+    <hr/>
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-class-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">ID</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id_before" placeholder="请输入起始ID" autocomplete="off" class="layui-input">
+                        <input type="text" name="id_after" placeholder="请输入结束ID" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">缩写名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="abbr_name" placeholder="请输入班级缩写名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">年级</label>
+                    <div class="layui-input-block">
+                        <input type="hidden" id="LAY-admin-grade-id" name="major_id" value="" autocomplete="off" class="layui-input">
+                        <button class="layui-btn layuiadmin-btn-useradmin" data-type="grade">
+                            <p id="LAY-admin-grade-name">请选择年级</p>
+                        </button>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">所属专业</label>
+                    <div class="layui-input-block">
+                        <input type="hidden" id="LAY-admin-major-id" name="major_id" value="" autocomplete="off" class="layui-input">
+                        <button class="layui-btn layuiadmin-btn-useradmin" data-type="major">
+                            <p id="LAY-admin-major-name">请选择专业</p>
+                        </button>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">创建时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="created_at_before" placeholder="请输入起始时间" autocomplete="off" class="layui-input date-item">
+                        <input type="text" name="created_at_after" placeholder="请输入结束时间" autocomplete="off" class="layui-input date-item">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">更新时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="updated_at_before" placeholder="请输入起始时间" autocomplete="off" class="layui-input date-item">
+                        <input type="text" name="updated_at_after" placeholder="请输入结束时间" autocomplete="off" class="layui-input date-item">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-admin-class-checkbox-list-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-admin-class-checkbox-list" lay-filter="LAY-admin-class-checkbox-list"></table>
+            <script type="text/html" id="table-admin-class-checkbox-list">
+                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add"><i class="layui-icon layui-icon-add-1"></i>添加</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    var classIdSet = new Set();
+    layui.use('laydate', function () {
+        const laydate = layui.laydate;
+        lay('.date-item').each(function () {
+            laydate.render({
+                elem: this
+                ,type: 'datetime'
+            });
+        });
+
+    });
+    layui.use('admin/class', layui.factory('admin/class')).use(['admin', 'admin/class', 'table', 'laytpl'], function(){
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,table = layui.table
+            ,form = layui.form
+            ,setter = layui.setter
+            ,tpl = layui.laytpl
+            ;
+
+        form.render(null, 'layadmin-class-formlist');
+
+        //监听搜索
+        form.on('submit(LAY-admin-class-checkbox-list-search)', function(data){
+            var field = data.field;
+            // console.log(111);
+            //执行重载
+            table.reload('LAY-admin-class-checkbox-list', {
+                where: field
+            });
+        });
+
+        var active = {
+            grade: function () {
+                admin.popup({
+                    title: '选择年级'
+                    ,area: ['900px', '700px']
+                    ,id: 'LAY-admin-grade-select'
+                    ,success: function (layero, index) {
+                        view(this.id).render('admin/grade/radio_list').done(function () {
+                            $('#LAY-admin-grade-radio-list-select').click(function () {
+                                var gradeData = (table.checkStatus('LAY-admin-grade-radio-list').data)[0];
+                                if (gradeData) {
+                                    $('#LAY-admin-grade-name').html(gradeData.name);
+                                    $('#LAY-admin-grade-id').val(gradeData.id);
+                                    layer.close(index);
+                                } else {
+                                    $('#LAY-admin-grade-name').html('请选择年级');
+                                    $('#LAY-admin-grade-id').val('');
+                                    layer.close(index);
+                                }
+                            })
+                        });
+                    }
+                });
+            },
+            major: function () {
+                admin.popup({
+                    title: '选择专业'
+                    ,area: ['900px', '700px']
+                    ,id: 'LAY-admin-major-select'
+                    ,success: function (layero, index) {
+                        view(this.id).render('admin/major/radio_list').done(function () {
+                            $('#LAY-admin-major-radio-list-select').click(function () {
+                                var majorData = (table.checkStatus('LAY-admin-major-radio-list').data)[0];
+                                if (majorData) {
+                                    $('#LAY-admin-major-name').html(majorData.name);
+                                    $('#LAY-admin-major-id').val(majorData.id);
+                                    layer.close(index);
+                                } else {
+                                    $('#LAY-admin-major-name').html('请选择专业');
+                                    $('#LAY-admin-major-id').val('');
+                                    layer.close(index);
+                                }
+                            })
+                        });
+                    }
+                });
+            }
+        };
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+        $('.layui-btn.class-id').on('click', function() {
+            $(this).remove();
+        });
+    });
+</script>

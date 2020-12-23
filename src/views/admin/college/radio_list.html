@@ -1,0 +1,89 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-college-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">ID</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id_before" placeholder="请输入起始ID" autocomplete="off" class="layui-input">
+                        <input type="text" name="id_after" placeholder="请输入结束ID" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">学院名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" placeholder="请输入学院名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">创建时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="created_at_before" placeholder="请输入起始时间" autocomplete="off" class="layui-input date-item">
+                        <input type="text" name="created_at_after" placeholder="请输入结束时间" autocomplete="off" class="layui-input date-item">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">更新时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="updated_at_before" placeholder="请输入起始时间" autocomplete="off" class="layui-input date-item">
+                        <input type="text" name="updated_at_after" placeholder="请输入结束时间" autocomplete="off" class="layui-input date-item">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-admin-college-radio-list-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-admin-college-radio-list" lay-filter="LAY-admin-college-radio-list"></table>
+        </div>
+        <div class="layui-card-body">
+            <button class="layui-btn layuiadmin-btn-useradmin" id="LAY-admin-college-radio-list-select">
+                确定
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('laydate', function () {
+        const laydate = layui.laydate;
+        lay('.date-item').each(function () {
+            laydate.render({
+                elem: this
+                ,type: 'datetime'
+            });
+        });
+
+    });
+    layui.use('admin/college', layui.factory('admin/college')).use(['admin', 'admin/college', 'table'], function(){
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,table = layui.table
+            ,form = layui.form
+            ,setter = layui.setter;
+
+        form.render(null, 'layadmin-college-formlist');
+
+        //监听搜索
+        form.on('submit(LAY-admin-college-radio-list-search)', function(data){
+            var field = data.field;
+            // console.log(111);
+            //执行重载
+            table.reload('LAY-admin-college-radio-list', {
+                where: field
+            });
+        });
+
+        var active = {};
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>

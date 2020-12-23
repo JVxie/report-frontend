@@ -1,0 +1,35 @@
+<div class="layui-form" lay-filter="layuiadmin-form-teacher" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">工号</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="number" value="{{ d.params.number || '' }}" lay-verify="required" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="name" value="{{ d.params.name || '' }}" lay-verify="required" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="sex_name" value="{{ d.params.sex_name || '' }}" lay-verify="required" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系方式（手机）</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="phone" value="{{ d.params.phone || '' }}"  autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+</div>
+

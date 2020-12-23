@@ -1,0 +1,129 @@
+<title>设置我的学生信息</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>信息管理</cite></a>
+        <a><cite>个人学生信息</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">修改个人学生信息</div>
+                <div class="layui-card-body" pad15>
+                    <div class="layui-form" lay-filter="layuiadmin-form-student" style="padding: 20px 0 0 0;">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">学号<font color="red">*</font></label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="number" value="" lay-verify="required" autocomplete="off"
+                                       class="layui-input" readonly>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">不可修改</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">班级<font color="red">*</font></label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="class_abbr_name" value="" lay-verify="required" autocomplete="off"
+                                       class="layui-input" readonly>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">不可修改</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">姓名<font color="red">*</font></label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" value="" lay-verify="required" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">性别<font color="red">*</font></label>
+                            <div class="layui-input-inline">
+                                <select name="sex" lay-verify="required" autocomplete="off">
+                                    <option value="">请选择性别</option>
+                                    <option value="1">男</option>
+                                    <option value="2">女</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">联系方式（手机）</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="phone" value="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">身份证号码</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="identity_number" value="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+                                <input type="button" lay-submit lay-filter="LAY-student-student-submit" value="确认" class="layui-btn">
+                                <label class="">注意：<font color="red">*</font>为必填项</label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <label class="">若学号或班级有误请联系老师。</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'form'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , form = layui.form
+            , setter = layui.setter
+            , view = layui.view
+        ;
+
+        admin.req({
+            url: setter.userRole.student.api + '/info'
+            , type: 'GET'
+            , dataType: 'json'
+            , done: function (res_p) {
+                // console.log(res_p);
+                var data = res_p.data;
+                form.val('layuiadmin-form-student', {
+                    number: data.number,
+                    class_abbr_name: data.class_abbr_name,
+                    name: data.name,
+                    sex: data.sex,
+                    phone: data.phone || '',
+                    identity_number: data.identity_number || ''
+                });
+            }
+        });
+
+        // form.render();
+
+        form.on('submit(LAY-student-student-submit)', function (data) {
+            // console.log(data.field);
+            admin.req({
+                url: setter.userRole.student.api + '/info'
+                , type: 'PUT'
+                , data: JSON.stringify(data.field)
+                , contentType: 'application/json'
+                , dataType: 'json'
+                , done: function (res_p) {
+                    layer.msg(res_p.msg, {
+                        offset: '15px'
+                        ,icon: 1
+                        ,time: 1000
+                    });
+                }
+            });
+        });
+
+    });
+</script>

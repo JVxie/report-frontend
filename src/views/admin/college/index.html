@@ -1,0 +1,146 @@
+<title>学院列表</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>信息查询</cite></a>
+        <a><cite>学院列表</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-college-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">ID</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id_before" placeholder="请输入起始ID" autocomplete="off" class="layui-input">
+                        <input type="text" name="id_after" placeholder="请输入结束ID" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">学院名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" placeholder="请输入学院名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">创建时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="created_at_before" placeholder="请输入起始时间" autocomplete="off" class="layui-input date-item">
+                        <input type="text" name="created_at_after" placeholder="请输入结束时间" autocomplete="off" class="layui-input date-item">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">更新时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="updated_at_before" placeholder="请输入起始时间" autocomplete="off" class="layui-input date-item">
+                        <input type="text" name="updated_at_after" placeholder="请输入结束时间" autocomplete="off" class="layui-input date-item">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-admin-college-list-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">
+                    <i class="layui-icon layui-icon-add-circle"></i>添加
+                </button>
+            </div>
+
+            <table id="LAY-admin-college-list" lay-filter="LAY-admin-college-list"></table>
+<!--            <script type="text/html" id="imgTpl">-->
+<!--                <img style="display: inline-block; width: 50%; height: 100%;" src= {{ d.avatar }}>-->
+<!--            </script>-->
+            <script type="text/html" id="table-admin-college-list">
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('laydate', function () {
+        const laydate = layui.laydate;
+        lay('.date-item').each(function () {
+            laydate.render({
+                elem: this
+                ,type: 'datetime'
+            });
+        });
+
+    });
+    layui.use('admin/college', layui.factory('admin/college')).use(['admin', 'admin/college', 'table'], function(){
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,table = layui.table
+            ,form = layui.form
+            ,setter = layui.setter;
+
+        form.render(null, 'layadmin-college-formlist');
+
+        //监听搜索
+        form.on('submit(LAY-admin-college-list-search)', function(data){
+            var field = data.field;
+            // console.log(111);
+            //执行重载
+            table.reload('LAY-admin-college-list', {
+                where: field
+            });
+        });
+
+        //事件
+        var active = {
+            add: function(){
+                admin.popup({
+                    title: '添加学院'
+                    ,area: ['350px', '250px']
+                    ,id: 'LAY-popup-user-add'
+                    ,success: function(layero, index){
+                        view(this.id).render('admin/college/form').done(function(){
+                            form.render(null, 'layuiadmin-form-college');
+                            //监听提交
+                            form.on('submit(LAY-admin-college-submit)', function(data){
+                                var field = data.field; //获取提交的字段
+
+                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                admin.req({
+                                    url: setter.userRole.admin.api + '/college'
+                                    ,type: 'POST'
+                                    ,headers: {
+                                        Authorization: setter.request.tokenPrefix + layui.data(setter.tableName).token
+                                    }
+                                    ,contentType: 'application/json'
+                                    ,data: JSON.stringify(field)
+                                    ,dataType: 'json'
+                                    ,done: function(res) {
+                                        layer.msg(res.msg, {
+                                            offset: '15px'
+                                            ,icon: 1
+                                            ,time: 1000
+                                        });
+                                        layui.table.reload('LAY-admin-college-list'); //重载表格
+                                        layer.close(index); //执行关闭
+                                    }
+                                })
+                            });
+                        });
+                    }
+                });
+            }
+        };
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>

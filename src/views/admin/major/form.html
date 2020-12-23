@@ -1,0 +1,96 @@
+<div class="layui-form" lay-filter="layuiadmin-form-major" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">专业名称</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="name" value="{{ d.params.name || '' }}" lay-verify="required" placeholder="请输入专业名称" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">所属学院</label>
+        <div class="layui-inline">
+            <script type="text/html" template>
+                <input type="hidden" id="LAY-admin-college-id-form" name="college_id" value="{{ d.params.college_id || '' }}" autocomplete="off" class="layui-input">
+            </script>
+            <button class="layui-btn layuiadmin-btn-useradmin" data-type="college">
+                <script type="text/html" template>
+                    <p id="LAY-admin-college-name-form">{{=d.params.college_name || '请选择学院'}}</p>
+                </script>
+            </button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">专业类别</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <select id="LAY-admin-major-category-form" name="category" lay-verify="required" lay-search>
+                    <option value="" >请选择一个专业类别</option>
+                    <option value="1" {{d.params.category!==1 || 'selected'}}>文学</option>
+                    <option value="2" {{d.params.category!==2 || 'selected'}}>法学</option>
+                    <option value="3" {{d.params.category!==3 || 'selected'}}>管理学</option>
+                    <option value="4" {{d.params.category!==4 || 'selected'}}>理学</option>
+                    <option value="5" {{d.params.category!==5 || 'selected'}}>工学</option>
+                    <option value="6" {{d.params.category!==6 || 'selected'}}>教育学</option>
+                    <option value="7" {{d.params.category!==7 || 'selected'}}>历史学</option>
+                    <option value="8" {{d.params.category!==8 || 'selected'}}>经济学</option>
+                    <option value="9" {{d.params.category!==9 || 'selected'}}>农学</option>
+                    <option value="10" {{d.params.category!==10 || 'selected'}}>艺术学</option>
+                </select>
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-admin-major-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('admin', function () {
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,table = layui.table
+            ,form = layui.form
+            ,setter = layui.setter;
+
+
+        form.render('select');
+
+        var active = {
+            college: function () {
+                admin.popup({
+                    title: '选择学院'
+                    ,area: ['900px', '700px']
+                    ,id: 'LAY-admin-college-select'
+                    ,success: function (layero, index) {
+                        view(this.id).render('admin/college/radio_list').done(function () {
+                            $('#LAY-admin-college-radio-list-select').click(function () {
+                                var collegeData = (table.checkStatus('LAY-admin-college-radio-list').data)[0];
+                                if (collegeData) {
+                                    $('#LAY-admin-college-name-form').html(collegeData.name);
+                                    $('#LAY-admin-college-id-form').val(collegeData.id);
+                                    layer.close(index);
+                                } else {
+                                    $('#LAY-admin-college-name-form').html('请选择学院');
+                                    $('#LAY-admin-college-id-form').val('');
+                                    layer.close(index);
+                                }
+                            })
+                        });
+                    }
+                });
+            }
+
+        };
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>

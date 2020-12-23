@@ -1,0 +1,97 @@
+<div class="layui-form" lay-filter="layuiadmin-form-user" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名<font color="red">*</font></label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="username" value="{{ d.params.number || '' }}" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码<font color="red">*</font></label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="password" name="password" value="{{ d.params.number || '' }}" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            </script>
+            <div class="layui-form-mid layui-word-aux">用户名/密码默认为学生学号</div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户昵称<font color="red">*</font></label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="nickname" value="{{ d.params.name || '' }}" lay-verify="required" placeholder="请输入用户昵称" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <script type="text/html" template>
+        {{#
+        if (!d.params.id) {
+        }}
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码<font color="red">*</font></label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" value="" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        {{#
+        }
+        }}
+    </script>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户角色<font color="red">*</font></label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <select name="user_role" id="Lay-teacher-user-role-select" lay-verify="required" lay-search>
+                    <option value="0" disabled >管理员</option>
+                    <option value="1" disabled >教师</option>
+                    <option value="2" selected >学生</option>
+                </select>
+                <div class="layui-form-mid layui-word-aux">不可修改</div>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="user_email" value="{{ d.params.user_email || '' }}"  placeholder="请输入用户邮箱" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="user_phone" value="{{ d.params.phone || '' }}"  placeholder="请输入用户手机号" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-teacher-user-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('admin', function () {
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,table = layui.table
+            ,form = layui.form
+            ,setter = layui.setter;
+
+
+        form.render('select');
+
+        var active = {};
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>

@@ -1,0 +1,172 @@
+<title>用户列表</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>信息查询</cite></a>
+        <a><cite>用户列表</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-user-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">ID</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id_before" placeholder="请输入起始ID" autocomplete="off" class="layui-input">
+                        <input type="text" name="id_after" placeholder="请输入结束ID" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">昵称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="nickname" placeholder="请输入用户昵称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">角色</label>
+                    <div class="layui-input-inline">
+                        <select name="user_role" lay-search>
+                            <option value="">请选择用户角色</option>
+                            <option value="0">管理员</option>
+                            <option value="1">教师</option>
+                            <option value="2">学生</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="user_email" placeholder="请输入用户邮箱" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">手机号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="user_phone" placeholder="请输入用户手机号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">创建时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="created_at_before" placeholder="请输入起始时间" autocomplete="off" class="layui-input date-item">
+                        <input type="text" name="created_at_after" placeholder="请输入结束时间" autocomplete="off" class="layui-input date-item">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">更新时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="updated_at_before" placeholder="请输入起始时间" autocomplete="off" class="layui-input date-item">
+                        <input type="text" name="updated_at_after" placeholder="请输入结束时间" autocomplete="off" class="layui-input date-item">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-admin-user-list-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">
+                    <i class="layui-icon layui-icon-add-circle"></i>添加
+                </button>
+            </div>
+
+            <table id="LAY-admin-user-list" lay-filter="LAY-admin-user-list"></table>
+            <script type="text/html" id="table-admin-user-list">
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="reset_password"><i class="layui-icon layui-icon-password"></i>重置</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('laydate', function () {
+        const laydate = layui.laydate;
+        lay('.date-item').each(function () {
+            laydate.render({
+                elem: this
+                ,type: 'datetime'
+            });
+        });
+
+    });
+    layui.use('admin/user', layui.factory('admin/user')).use(['admin', 'admin/user', 'table'], function(){
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,table = layui.table
+            ,form = layui.form
+            ,setter = layui.setter;
+
+        form.render(null, 'layadmin-user-formlist');
+
+        //监听搜索
+        form.on('submit(LAY-admin-user-list-search)', function(data){
+            var field = data.field;
+            //执行重载
+            table.reload('LAY-admin-user-list', {
+                where: field
+            });
+        });
+
+        //事件
+        var active = {
+            add: function(){
+                admin.popup({
+                    title: '添加用户'
+                    ,area: ['400px', '500px']
+                    ,id: 'LAY-admin-user-add'
+                    ,success: function(layero, index){
+                        view(this.id).render('admin/user/form').done(function(){
+                            form.render(null, 'layuiadmin-form-user');
+                            //监听提交
+                            form.on('submit(LAY-admin-user-submit)', function(data){
+                                var field = data.field; //获取提交的字段
+
+                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                admin.req({
+                                    url: setter.userRole.admin.api + '/user'
+                                    ,type: 'POST'
+                                    ,headers: {
+                                        Authorization: setter.request.tokenPrefix + layui.data(setter.tableName).token
+                                    }
+                                    ,contentType: 'application/json'
+                                    ,data: JSON.stringify(field)
+                                    ,dataType: 'json'
+                                    ,done: function(res) {
+                                        layer.msg(res.msg, {
+                                            offset: '15px'
+                                            ,icon: 1
+                                            ,time: 1000
+                                        });
+                                        layui.table.reload('LAY-admin-user-list'); //重载表格
+                                        layer.close(index); //执行关闭
+                                    }
+                                })
+                            });
+                        });
+                    }
+                });
+            },
+        };
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>

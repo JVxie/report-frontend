@@ -1,0 +1,126 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+
+        <div class="layui-col-md8">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">快捷功能</div>
+                        <div class="layui-card-body">
+                            <div class="student-system-carousel layadmin-shortcut">
+                                <!--                <div class="">-->
+                                <ul class="layui-row layui-col-space10">
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="teacher/major/">
+                                            <i class="layui-icon layui-icon-note"></i>
+                                            <cite>查询专业信息</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="teacher/class/">
+                                            <i class="layui-icon layui-icon-component"></i>
+                                            <cite>查询班级信息</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="teacher/teacher/">
+                                            <i class="layui-icon layui-icon-friends"></i>
+                                            <cite>查询教师信息</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="teacher/student/">
+                                            <i class="layui-icon layui-icon-group"></i>
+                                            <cite>管理学生信息</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="teacher/user/">
+                                            <i class="layui-icon layui-icon-user"></i>
+                                            <cite>管理学生用户信息</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="teacher/info">
+                                            <i class="layui-icon layui-icon-set"></i>
+                                            <cite>修改个人教师信息</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="teacher/student/report/">
+                                            <i class="layui-icon layui-icon-location"></i>
+                                            <cite>管理学生填报信息</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="set/user/info">
+                                            <i class="layui-icon layui-icon-set"></i>
+                                            <cite>修改个人用户信息</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="set/user/password">
+                                            <i class="layui-icon layui-icon-set"></i>
+                                            <cite>修改密码</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a href="javascript:void(0);" onclick="AddFavorite('学生信息管理系统',location.href)">
+                                            <i class="layui-icon layui-icon-star"></i>
+                                            <cite>收藏本站</cite>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <!--                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">日历</div>
+                        <div class="layui-card-body layui-center">
+                            <div class="date-item"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    //收藏本站
+    function AddFavorite(title, url) {
+        try {
+            window.external.addFavorite(url, title);
+        } catch (e) {
+            try {
+                window.sidebar.addPanel(title, url, "");
+            } catch (e) {
+                layui.use('layer', function () {
+                    layui.layer.msg("抱歉，您所使用的浏览器无法完成此操作。\n\n加入收藏失败，请使用Ctrl+D进行添加");
+                });
+            }
+        }
+    }
+
+    layui.use('laydate', function () {
+        const laydate = layui.laydate;
+        lay('.date-item').each(function () {
+            laydate.render({
+                elem: this
+                , type: 'datetime'
+                , position: 'static'
+            });
+        });
+
+    });
+    layui.use('console', layui.factory('console'));
+</script>

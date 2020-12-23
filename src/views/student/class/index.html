@@ -1,0 +1,143 @@
+<title>班级列表</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>信息查询</cite></a>
+        <a><cite>查询班级信息</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-class-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">ID</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id_before" placeholder="请输入起始ID" autocomplete="off" class="layui-input" />
+                        <input type="text" name="id_after" placeholder="请输入结束ID" autocomplete="off" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">缩写名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="abbr_name" placeholder="请输入班级缩写名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">年级</label>
+                    <div class="layui-input-block">
+                        <script type="text/html" template lay-url="{{layui.setter.userRole.student.api + '/grade'}}"
+                                lay-done="class_done(d);">
+                            <select name="grade_id" lay-search>
+                                <option value="">请选择年级</option>
+                                {{# layui.each(d.data, function(index, item) { }}
+                                <option value="{{item.id}}">{{item.name}}</option>
+                                {{#  }); }}
+                            </select>
+                        </script>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">所属专业</label>
+                    <div class="layui-input-block">
+                        <input type="hidden" id="LAY-student-major-id" name="major_id" value="" autocomplete="off" class="layui-input">
+                        <button class="layui-btn layuiadmin-btn-useradmin" data-type="major">
+                            <p id="LAY-student-major-name">请选择专业</p>
+                        </button>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-student-class-list-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+<!--            <div style="padding-bottom: 10px;">-->
+<!--                <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">-->
+<!--                    <i class="layui-icon layui-icon-add-circle"></i>添加-->
+<!--                </button>-->
+<!--            </div>-->
+
+            <table id="LAY-student-class-list" lay-filter="LAY-student-class-list"></table>
+            <script type="text/html" id="table-student-class-list">
+                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="check"><i class="layui-icon layui-icon-search"></i>查看</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('laydate', function () {
+        const laydate = layui.laydate;
+        lay('.date-item').each(function () {
+            laydate.render({
+                elem: this
+                ,type: 'datetime'
+            });
+        });
+
+    });
+    layui.use('student/class', layui.factory('student/class')).use(['admin', 'student/class', 'table'], function(){
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,table = layui.table
+            ,form = layui.form
+            ,setter = layui.setter;
+
+        form.render(null, 'layadmin-class-formlist');
+
+        //监听搜索
+        form.on('submit(LAY-student-class-list-search)', function(data){
+            var field = data.field;
+            //执行重载
+            table.reload('LAY-student-class-list', {
+                where: field
+            });
+        });
+
+        //事件
+        var active = {
+            major: function () {
+                admin.popup({
+                    title: '选择专业'
+                    ,area: ['900px', '700px']
+                    ,id: 'LAY-student-major-select'
+                    ,success: function (layero, index) {
+                        view(this.id).render('student/major/radio_list').done(function () {
+                            $('#LAY-student-major-radio-list-select').click(function () {
+                                var gradeData = (table.checkStatus('LAY-student-major-radio-list').data)[0];
+                                if (gradeData) {
+                                    $('#LAY-student-major-name').html(gradeData.name);
+                                    $('#LAY-student-major-id').val(gradeData.id);
+                                    layer.close(index);
+                                } else {
+                                    $('#LAY-student-major-name').html('请选择专业');
+                                    $('#LAY-student-major-id').val('');
+                                    layer.close(index);
+                                }
+                            })
+                        });
+                    }
+                });
+            }
+        };
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+    var class_done = function (d) {
+        layui.use(['form'], function(){
+            var form = layui.form;
+            form.render();
+        });
+    };
+</script>

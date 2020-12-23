@@ -1,0 +1,122 @@
+<div class="layui-form" lay-filter="layuiadmin-form-student" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">工号</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="number" value="{{ d.params.number || '' }}" lay-verify="required" placeholder="请输入学生学号" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="name" value="{{ d.params.name || '' }}" lay-verify="required" placeholder="请输入学生姓名" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="sex_name" value="{{ d.params.sex_name || '' }}" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="phone" value="{{ d.params.report_today.phone || '' }}"  placeholder="请输入手机号" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">体温</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="temperature" value="{{ d.params.report_today.temperature || '' }}"  placeholder="请输入手机号" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">当前所在地</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="now_address" value="{{ d.params.report_today.now_province_name || '' }} {{ d.params.report_today.now_city_name || '' }} {{ d.params.report_today.now_area_name || '' }} {{ d.params.report_today.now_address || '' }}"  placeholder="" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">家庭地址</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="now_address" value="{{ d.params.report_today.home_province_name || '' }} {{ d.params.report_today.home_city_name || '' }} {{ d.params.report_today.home_area_name || '' }} {{ d.params.report_today.home_address || '' }}"  placeholder="" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否发烧咳嗽</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="now_address" value="{{ d.params.report_today.is_fever_cough_name || '' }}"  placeholder="" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否确诊新型肺炎</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="now_address" value="{{ d.params.report_today.is_covid_name || '' }}"  placeholder="" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否疑似感染</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="now_address" value="{{ d.params.report_today.is_infection_name || '' }}"  placeholder="" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">居住地疫情风险等级</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="now_address" value="{{ d.params.report_today.area_level_name || '' }}"  placeholder="" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否有防疫健康绿码</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="now_address" value="{{ d.params.report_today.is_health_code_name || '' }}"  placeholder="" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否从国(境)外返回(9月份起算)</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="now_address" value="{{ d.params.report_today.is_back_foreign_name || '' }}"  placeholder="" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否接触国(境)外返回的人员</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="now_address" value="{{ d.params.report_today.is_touch_foreigner_name || '' }}"  placeholder="" autocomplete="off" class="layui-input" readonly>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">其他情况</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <textarea name="description" placeholder="无" class="layui-textarea" readonly>{{ d.params.report_today.description }}</textarea>
+            </script>
+        </div>
+    </div>
+</div>

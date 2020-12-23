@@ -1,0 +1,225 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+
+        <div class="layui-col-md8">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">快捷功能</div>
+                        <div class="layui-card-body">
+                            <div class="student-system-carousel layadmin-shortcut">
+                                <!--                <div class="">-->
+                                <ul class="layui-row layui-col-space10">
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="admin/college/">
+                                            <i class="layui-icon layui-icon-flag"></i>
+                                            <cite>学院管理</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="admin/grade/">
+                                            <i class="layui-icon layui-icon-console"></i>
+                                            <cite>年级管理</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="admin/major/">
+                                            <i class="layui-icon layui-icon-note"></i>
+                                            <cite>专业管理</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="admin/class/">
+                                            <i class="layui-icon layui-icon-component"></i>
+                                            <cite>班级管理</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="admin/teacher/">
+                                            <i class="layui-icon layui-icon-friends"></i>
+                                            <cite>教师管理</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="admin/student/">
+                                            <i class="layui-icon layui-icon-group"></i>
+                                            <cite>学生管理</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="admin/user/">
+                                            <i class="layui-icon layui-icon-user"></i>
+                                            <cite>用户管理</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="admin/teacher/classes">
+                                            <i class="layui-icon layui-icon-search"></i>
+                                            <cite>查询教师管理的班级</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="admin/teacher/report/">
+                                            <i class="layui-icon layui-icon-location"></i>
+                                            <cite>教师疫情填报管理</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="admin/student/report/">
+                                            <i class="layui-icon layui-icon-location"></i>
+                                            <cite>学生疫情填报管理</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a lay-href="set/user/info">
+                                            <i class="layui-icon layui-icon-set"></i>
+                                            <cite>个人用户信息修改</cite>
+                                        </a>
+                                    </li>
+                                    <li class="layui-col-xs3">
+                                        <a href="javascript:void(0);" onclick="AddFavorite('学生信息管理系统',location.href)">
+                                            <i class="layui-icon layui-icon-star"></i>
+                                            <cite>收藏本站</cite>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <!--                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">日历</div>
+                        <div class="layui-card-body layui-center">
+                            <div class="date-item"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    <div class="layui-row layui-col-space15">-->
+<!--        <div class="layui-col-md8">-->
+<!--            <div class="layui-row layui-col-space15">-->
+<!--                <div class="layui-col-md12">-->
+<!--                    <div class="layui-card">-->
+<!--                        <div class="layui-card-header">数据概览</div>-->
+<!--                        <div class="layui-card-body">-->
+
+<!--                            <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade"-->
+<!--                                 lay-filter="LAY-index-dataview">-->
+<!--                                <div carousel-item id="LAY-index-dataview">-->
+<!--                                    <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>-->
+<!--                                    <div></div>-->
+<!--                                    <div></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="layui-col-md4">-->
+<!--            <div class="layui-card">-->
+<!--                <div class="layui-card-header">版本信息</div>-->
+<!--                <div class="layui-card-body layui-text">-->
+<!--                    <table class="layui-table">-->
+<!--                        <colgroup>-->
+<!--                            <col width="100">-->
+<!--                            <col>-->
+<!--                        </colgroup>-->
+<!--                        <tbody>-->
+<!--                        <tr>-->
+<!--                            <td>当前版本</td>-->
+<!--                            <td>-->
+<!--                                <script type="text/html" template>-->
+<!--                                    v{{ layui.admin.v }}-->
+<!--                                    <a href="http://fly.layui.com/docs/3/" target="_blank" style="padding-left: 15px;">更新日志</a>-->
+<!--                                </script>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>基于框架</td>-->
+<!--                            <td>-->
+<!--                                <script type="text/html" template>-->
+<!--                                    layui-v{{ layui.v }}-->
+<!--                                </script>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>主要特色</td>-->
+<!--                            <td>单页面 / 响应式 / 清爽 / 极简</td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>获取渠道</td>-->
+<!--                            <td style="padding-bottom: 0;">-->
+<!--                                <div class="layui-btn-container">-->
+<!--                                    <a href="http://www.layui.com/admin/" target="_blank"-->
+<!--                                       class="layui-btn layui-btn-danger">获取授权</a>-->
+<!--                                    <a href="http://fly.layui.com/download/layuiAdmin/" target="_blank"-->
+<!--                                       class="layui-btn">立即下载</a>-->
+<!--                                </div>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+
+
+<script>
+    //加载 controller 目录下的对应模块
+    /*
+
+      小贴士：
+        这里 console 模块对应 的 console.js 并不会重复加载，
+        然而该页面的视图则是重新插入到容器，那如何保证能重新来控制视图？有两种方式：
+          1): 借助 layui.factory 方法获取 console 模块的工厂（回调函数）给 layui.use
+          2): 直接在 layui.use 方法的回调中书写业务代码，即:
+              layui.use('console', function(){
+                //同 console.js 中的 layui.define 回调中的代码
+              });
+
+      这里我们采用的是方式1。其它很多视图中采用的其实都是方式2，因为更简单些，也减少了一个请求数。
+
+    */
+    //收藏本站
+    function AddFavorite(title, url) {
+        try {
+            window.external.addFavorite(url, title);
+        } catch (e) {
+            try {
+                window.sidebar.addPanel(title, url, "");
+            } catch (e) {
+                layui.use('layer', function () {
+                    layui.layer.msg("抱歉，您所使用的浏览器无法完成此操作。\n\n加入收藏失败，请使用Ctrl+D进行添加");
+                });
+            }
+        }
+    }
+
+    layui.use('laydate', function () {
+        const laydate = layui.laydate;
+        lay('.date-item').each(function () {
+            laydate.render({
+                elem: this
+                , type: 'datetime'
+                , position: 'static'
+            });
+        });
+
+    });
+    layui.use('console', layui.factory('console'));
+</script>

@@ -1,0 +1,141 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-major-formlist">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">ID</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id_before" placeholder="请输入起始ID" autocomplete="off" class="layui-input">
+                        <input type="text" name="id_after" placeholder="请输入结束ID" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">专业名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" placeholder="请输入专业名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">专业类别</label>
+                    <div class="layui-input-block">
+                        <select class="" name="category" lay-search>
+                            <option value="">请选择专业类别</option>
+                            <option value="1">文学</option>
+                            <option value="2">法学</option>
+                            <option value="3">管理学</option>
+                            <option value="4">理学</option>
+                            <option value="5">工学</option>
+                            <option value="6">教育学</option>
+                            <option value="7">历史学</option>
+                            <option value="8">经济学</option>
+                            <option value="9">农学</option>
+                            <option value="10">艺术学</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">所属学院</label>
+                    <div class="layui-input-block">
+                        <input type="hidden" id="LAY-admin-college-id" name="college_id" value="" autocomplete="off" class="layui-input">
+                        <button class="layui-btn layuiadmin-btn-useradmin" data-type="college">
+                            <p id="LAY-admin-college-name">请选择学院</p>
+                        </button>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">创建时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="created_at_before" placeholder="请输入起始时间" autocomplete="off" class="layui-input date-item">
+                        <input type="text" name="created_at_after" placeholder="请输入结束时间" autocomplete="off" class="layui-input date-item">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">更新时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="updated_at_before" placeholder="请输入起始时间" autocomplete="off" class="layui-input date-item">
+                        <input type="text" name="updated_at_after" placeholder="请输入结束时间" autocomplete="off" class="layui-input date-item">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="LAY-admin-major-radio-list-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-admin-major-radio-list" lay-filter="LAY-admin-major-radio-list"></table>
+        </div>
+        <div class="layui-card-body">
+            <button class="layui-btn layuiadmin-btn-useradmin" id="LAY-admin-major-radio-list-select">
+                确定
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('laydate', function () {
+        const laydate = layui.laydate;
+        lay('.date-item').each(function () {
+            laydate.render({
+                elem: this
+                ,type: 'datetime'
+            });
+        });
+
+    });
+    layui.use('admin/major', layui.factory('admin/major')).use(['admin', 'admin/major', 'table'], function(){
+        var $ = layui.$
+            ,admin = layui.admin
+            ,view = layui.view
+            ,table = layui.table
+            ,form = layui.form
+            ,setter = layui.setter;
+
+        form.render(null, 'layadmin-major-formlist');
+
+        //监听搜索
+        form.on('submit(LAY-admin-major-radio-list-search)', function(data){
+            var field = data.field;
+            //执行重载
+            table.reload('LAY-admin-major-radio-list', {
+                where: field
+            });
+        });
+
+        //事件
+        var active = {
+            college: function () {
+                admin.popup({
+                    title: '选择学院'
+                    ,area: ['900px', '700px']
+                    ,id: 'LAY-admin-college-select'
+                    ,success: function (layero, index) {
+                        view(this.id).render('admin/college/radio_list').done(function () {
+                            $('#LAY-admin-college-radio-list-select').click(function () {
+                                var collegeData = (table.checkStatus('LAY-admin-college-radio-list').data)[0];
+                                if (collegeData) {
+                                    $('#LAY-admin-college-name').html(collegeData.name);
+                                    $('#LAY-admin-college-id').val(collegeData.id);
+                                    layer.close(index);
+                                } else {
+                                    $('#LAY-admin-college-name').html('请选择学院');
+                                    $('#LAY-admin-college-id').val('');
+                                    layer.close(index);
+                                }
+                            })
+                        });
+                    }
+                });
+            }
+
+        };
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
